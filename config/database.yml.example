@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: ridefy_development
+  username: your_username
+  password: your_password
+
+test:
+  <<: *default
+  database: ridefy_test
+  username: your_username
+  password: your_password
+
+production:
+  <<: *default
+  database: ridefy_production
