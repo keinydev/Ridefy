@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 2021_09_08_151234) do
   end
 
   create_table "payment_methods", force: :cascade do |t|
-    t.string "type", default: "CARD", null: false
+    t.string "method_type", default: "CARD", null: false
     t.string "token", null: false
     t.string "source_id", null: false
     t.bigint "rider_id", null: false

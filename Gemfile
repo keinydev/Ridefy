@@ -14,14 +14,17 @@ gem "rake"
 gem "sinatra-activerecord"
 
 # Data
-gem 'faker'
+gem "faker"
 
 # Api
 gem "sinatra-cross_origin"
 
 # Dry Gems
-gem 'dry-validation'
+gem "dry-validation"
+
+gem "http"
 
 group :development, :test do
   gem "rerun"
+  gem "dotenv", groups: [:development, :test]
 end

@@ -7,20 +7,20 @@ class NewPaymentMethodContract < ApplicationContract
     required(:method_type).filled(:string)
     required(:token).filled(:string)
     required(:acceptance_token).filled(:string)
-    required(:accepted_token).filled(:bool)
+    required(:accepted_contract).filled(:bool)
   end
 
   rule(:email).validate(:email_format)
 
   rule(:method_type) do
-    key.failure('It must be CARD') if value != 'CARD'
+    key.failure('This app only accept CARD or NEQUI') if value != 'CARD' and value != 'NEQUI'
+  end
+
+  rule(:accepted_contract) do
+    key.failure('The user must accept the contract in order to comply Colombian regulation and Habeas data') if value == false
   end
 
   # rule(:token, :acceptance_token) do
   #   key.failure('must be different to acceptance_token') if values[:token] == values[:acceptance_token]
-  # end
-
-  # rule(:accepted_token) do
-  #   key.failure('the user must accept the acceptance_token') if value == false
   # end
 end
