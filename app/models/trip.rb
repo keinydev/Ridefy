@@ -1,7 +1,7 @@
 # models/trip.rb
 
 class Trip < ActiveRecord::Base
-  validates :start_location, :end_location, :start_time, :end_time, presence: true
+  validates :start_location, :end_location, :start_time, presence: true
 
   belongs_to :rider
   belongs_to :driver

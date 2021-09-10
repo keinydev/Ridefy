@@ -19,8 +19,4 @@ class NewPaymentMethodContract < ApplicationContract
   rule(:accepted_contract) do
     key.failure('The user must accept the contract in order to comply Colombian regulation and Habeas data') if value == false
   end
-
-  # rule(:token, :acceptance_token) do
-  #   key.failure('must be different to acceptance_token') if values[:token] == values[:acceptance_token]
-  # end
 end

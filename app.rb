@@ -6,8 +6,9 @@ require 'dotenv/load'
 require "./config/cors"
 require "./lib/request_helper"
 require './app/controllers/api/v1/payment_methods_controller'
-# require './app/controllers/riders_controller.rb'
-# require './app/controllers/trips_controller.rb'
+require './app/controllers/api/v1/request_trips_controller'
+
+Dir["#{Dir.pwd}/app/models/*.rb"].each { |file| require file }
 
 class App < Sinatra::Base
 
@@ -32,12 +33,11 @@ class App < Sinatra::Base
       Api::V1::PaymentMethodsController.new(@body_params).run
 	  end
 
-	  post "/trip" do
-	    # data = parse_params(request.body.read)
-     #  resultado = Api::V1::PaymentMethodsController.new.run(data)
+	  post "/trips" do
+	    Api::V1::RequestTripsController.new(@body_params).run
 	  end
 
-	  post "/finish_trip" do
+	  put "/trips/:id/finish" do
 	    # data = parse_params(request.body.read)
      #  resultado = Api::V1::PaymentMethodsController.new.run(data)
 	  end	  

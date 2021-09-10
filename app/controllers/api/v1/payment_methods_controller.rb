@@ -1,7 +1,4 @@
-require "./lib/request_helper"
 require './app/controllers/validators/new_payment_method_contract.rb'
-require './app/models/payment_method'
-require './app/models/rider'
 
 module Api
   module V1
@@ -13,8 +10,8 @@ module Api
 		  end
 
 		  def run
-				return api_response("error", @contract_validation.errors.to_h) if validation
-				return api_response("error", { email: "Email not found" })     if rider.nil?
+				return { errors: @contract_validation.errors.to_h }.to_json  if validation
+				return { errors: { email: "Email not found" }}.to_json       if rider.nil?
 				
 				payment_method_request
 		  end
@@ -27,7 +24,7 @@ module Api
 		    	@data.merge(source_id: res_body["data"]["id"])
 		    	create_payment_method
 		    else
-		    	api_response("error", res_body["error"]["messages"])
+		    	{ errors: res_body["error"]["messages"] }.to_json
 		    end  	
       end
 
@@ -35,14 +32,18 @@ module Api
 		    @payment_method = PaymentMethod.new(params)
 		    # print(@payment_method)
 		    if @payment_method.save
-		      api_response("payment_method", @payment_method)
+		    	{ payment_method: @payment_method }.to_json
 		    else
-		      api_response("error", @payment_method.errors)
+		    	{ errors: @payment_method.errors }.to_json
 		    end
 		  end      
 
       private 
 
+      def params
+      	{ method_type: @data["method_type"], token: @data["token"], source_id: @data["source_id"], rider_id: rider.id }
+      end
+		  
 		  def rider
         @rider = Rider.find_by(email: @data["email"])
       end
@@ -54,10 +55,6 @@ module Api
       		customer_email: @data["email"],
       		acceptance_token: @data["acceptance_token"]
       	}
-      end
-
-      def params
-      	{ method_type: @data["method_type"], token: @data["token"], source_id: @data["source_id"], rider_id: rider.id }
       end
 
 		  def api_response(status, message)

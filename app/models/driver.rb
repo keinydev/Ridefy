@@ -5,4 +5,8 @@ class Driver < ActiveRecord::Base
 
   has_many :trips
   has_many :cars
+
+  scope :find_available, -> () do
+    joins(:cars).where("drivers.working = true AND cars.active = true")
+  end
 end

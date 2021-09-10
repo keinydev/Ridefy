@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 2021_09_08_151234) do
     t.hstore "start_location", null: false
     t.hstore "end_location", null: false
     t.datetime "start_time", null: false
-    t.datetime "end_time", null: false
+    t.datetime "end_time"
     t.bigint "driver_id", null: false
     t.bigint "rider_id", null: false
     t.bigint "car_id", null: false
