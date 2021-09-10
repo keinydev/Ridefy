@@ -6,4 +6,8 @@ class Rider < ActiveRecord::Base
 
   has_many :trips
   has_many :payment_methods
+
+  scope :rider_authorized, -> (email) do
+    joins(:payment_methods).where("(riders.email = :email AND payment_methods.source_id != '' AND payment_methods.token != '')", email: email)
+  end  
 end

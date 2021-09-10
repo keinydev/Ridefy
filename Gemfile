@@ -4,6 +4,8 @@ source "https://rubygems.org"
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
+ruby '~> 2.7.3'
+
 # Framework
 gem "sinatra"
 gem "sinatra-contrib"
@@ -31,7 +33,8 @@ group :development, :test do
 end
 
 group :test do
-	gem 'rspec'
+	gem 'rspec', '~> 3.0'
+	gem 'rack-test'
 	gem 'factory_bot'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'database_cleaner'

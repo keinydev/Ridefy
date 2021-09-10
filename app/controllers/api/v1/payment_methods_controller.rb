@@ -1,4 +1,4 @@
-require './app/controllers/validators/new_payment_method_contract.rb'
+require './app/controllers/validators/payment_method_contract.rb'
 
 module Api
   module V1
@@ -6,7 +6,7 @@ module Api
 
 		  def initialize(data)
 		  	@data = data
-		  	@contract_validation = NewPaymentMethodContract.new.call(@data)
+		  	@contract_validation = PaymentMethodContract.new.call(@data)
 		  end
 
 		  def run

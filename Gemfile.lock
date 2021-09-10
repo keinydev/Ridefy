@@ -164,15 +164,19 @@ DEPENDENCIES
   faker
   http
   pg
+  rack-test
   rake
   rerun
-  rspec
+  rspec (~> 3.0)
   shoulda-matchers (~> 5.0)
   sinatra
   sinatra-activerecord
   sinatra-contrib
   sinatra-cross_origin
   tux
+
+RUBY VERSION
+   ruby 2.7.3p183
 
 BUNDLED WITH
    2.2.20

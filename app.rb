@@ -37,9 +37,9 @@ class App < Sinatra::Base
 	    Api::V1::RequestTripsController.new(@body_params).run
 	  end
 
-	  put "/trips/:id/finish" do
-	    # data = parse_params(request.body.read)
-     #  resultado = Api::V1::PaymentMethodsController.new.run(data)
+	  post "/trips/:id/finish" do
+	  	@body_params.merge(id: params['id'])
+	    Api::V1::FinishTripsController.new(@body_params).run
 	  end	  
 	end
 
