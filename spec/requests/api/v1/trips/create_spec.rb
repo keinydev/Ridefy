@@ -4,7 +4,7 @@ describe "POST api/v1/trips", type: :request do
 
   let(:app) { App.new }
 
-  let(:rider) { create(:rider) }
+  let!(:rider) { create(:rider, email: "rider@example.com") }
 
   let!(:driver) { create(:driver) }
 
@@ -60,7 +60,6 @@ describe "POST api/v1/trips", type: :request do
     end
 
     it 'returns errors -> payment_method key in body response' do
-      print(json_response)
       expect(json_response['errors']['payment_method']).to be_present
     end      
 

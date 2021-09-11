@@ -25,7 +25,7 @@ module Api
 			def update_trip
 				@data = @data.transform_keys(&:to_s)
 
-				if trip.update(end_time: @data["end_time"])
+				if trip.update(end_time: @data["end_time"], end_location: @data["end_location"])
 					
 					@charge = Charge.new(total: @data["total"], trip_id: trip.id)
 					@charge.save
@@ -33,9 +33,21 @@ module Api
 					response = { 
 						data: { 
 							id: trip.id,
-							total: @data["total"],
+							start_location: trip.start_location,
+							end_location: trip.end_location,
+							start_time: trip.start_time,
+							end_time: trip.end_time,
+							rider: {
+								id: trip.rider.id,
+								email: trip.rider.email
+							},							
+							driver: {
+								id: trip.driver.id,
+								email: trip.driver.email
+							},
 							charge: {
-								id: @charge.id
+								id: @charge.id,
+								total: @charge.total
 							}
 						} 
 				  }.to_json
@@ -54,7 +66,7 @@ module Api
       	end_time = Time.now
 
 		    start_location = trip.start_location.transform_values(&:to_f).values
-		    end_location = trip.end_location.transform_values(&:to_f).values
+		    end_location = @data["end_location"].transform_values(&:to_f).values
 
 		    distance = Utils::distance_between(start_location, end_location)
 		    minutes = Utils::calculate_minutes(trip.start_time, end_time)

@@ -13,7 +13,7 @@ module Api
 				return { errors: @contract_validation.errors.to_h }.to_json                           if validation
 				return { errors: { trip: "Process not found" }}.to_json                               if charge.nil?
 				return { errors: { email: "Payment Method not found" }}.to_json                       if payment_method.nil?
-				return { errors: { email: "This payment is not associated to the rider" }}.to_json    if no_associated_payment_method?
+				return { errors: { email: "This payment is not associated to the rider" }}.to_json    if no_associated_payment_method
 				
 				transaction_request
 		  end
@@ -51,7 +51,7 @@ module Api
         @payment_method = PaymentMethod.find(@data["payment_method_id"]) rescue nil
       end           
 
-		  def no_associated_payment_method?
+		  def no_associated_payment_method
         !Rider.rider_payment_method(@data["email"], @data["payment_method_id"]).present?
       end      
 
