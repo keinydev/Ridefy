@@ -20,19 +20,20 @@ module Api
       	response = RequestHelpers::Wompi::post("/payment_sources", body_request)
 		    res_body = RequestHelpers::json_response(response.body)
 
-		    if response.code == 200
-		    	@data.merge(source_id: res_body["data"]["id"])
+		    if response.status.success?
+		    	@data.merge!(source_id: res_body["data"]["id"])
+
 		    	create_payment_method
 		    else
-		    	{ errors: res_body["error"]["messages"] }.to_json
+		    	{ errors: res_body }.to_json
 		    end  	
       end
 
 		  def create_payment_method
 		    @payment_method = PaymentMethod.new(params)
-		    # print(@payment_method)
+
 		    if @payment_method.save
-		    	{ payment_method: @payment_method }.to_json
+		    	{ data: @payment_method }.to_json
 		    else
 		    	{ errors: @payment_method.errors }.to_json
 		    end
@@ -41,7 +42,8 @@ module Api
       private 
 
       def params
-      	{ method_type: @data["method_type"], token: @data["token"], source_id: @data["source_id"], rider_id: rider.id }
+      	@data = @data.transform_keys(&:to_s)
+      	{ method_type: @data["method_type"], source_id: @data["source_id"], rider_id: rider.id }
       end
 		  
 		  def rider
@@ -56,10 +58,6 @@ module Api
       		acceptance_token: @data["acceptance_token"]
       	}
       end
-
-		  def api_response(status, message)
-		  	{ "#{status}": message }.to_json
-		  end
 
 		  def validation
 		  	@contract_validation.errors.to_h.length > 0

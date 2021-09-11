@@ -29,8 +29,8 @@ describe "POST api/v1/trips", type: :request do
     end
 
     it 'returns trip in body response' do
-      expect(json_response['trip']).to be_present
-      expect(json_response['trip']['id']).to be_present
+      expect(json_response['data']).to be_present
+      expect(json_response['data']['id']).to be_present
     end   
 
     it 'create a trip in the database' do
@@ -60,6 +60,7 @@ describe "POST api/v1/trips", type: :request do
     end
 
     it 'returns errors -> payment_method key in body response' do
+      print(json_response)
       expect(json_response['errors']['payment_method']).to be_present
     end      
 

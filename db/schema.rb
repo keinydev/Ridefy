@@ -28,9 +28,10 @@ ActiveRecord::Schema.define(version: 2021_09_08_151234) do
   end
 
   create_table "charges", force: :cascade do |t|
-    t.decimal "total", null: false
+    t.float "total", default: 0.0, null: false
     t.bigint "trip_id", null: false
-    t.bigint "payment_method_id", null: false
+    t.bigint "payment_method_id"
+    t.string "transaction_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["payment_method_id"], name: "index_charges_on_payment_method_id"
@@ -53,7 +54,6 @@ ActiveRecord::Schema.define(version: 2021_09_08_151234) do
 
   create_table "payment_methods", force: :cascade do |t|
     t.string "method_type", default: "CARD", null: false
-    t.string "token", null: false
     t.string "source_id", null: false
     t.bigint "rider_id", null: false
     t.datetime "created_at", precision: 6, null: false

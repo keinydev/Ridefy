@@ -1,8 +1,9 @@
 require 'dry-validation'
+require 'dry-types'
 
-ContactSchema = Dry::Schema.Params do
-  required(:email).filled(:string) 
-  required(:phone).filled(:string)
+module Types
+  include Dry::Types()
+  Location = Types::Hash.schema(longitude: Types::Float, latitude: Types::Float)
 end
 
 class ApplicationContract < Dry::Validation::Contract
@@ -11,4 +12,8 @@ class ApplicationContract < Dry::Validation::Contract
       key.failure('not a valid email format')
     end
   end
+
+  register_macro(:payment_method_options) do
+  	key.failure('This app only accept CARD or NEQUI') if value != 'CARD' and value != 'NEQUI'
+  end  
 end

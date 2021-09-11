@@ -24,10 +24,17 @@ gem "sinatra-cross_origin"
 # Dry Gems
 gem "dry-validation"
 
+# Request
 gem "http"
-gem "tux"
+
+# Time
+gem "time_difference"
+
+# Geo 
+gem "geocoder"
 
 group :development, :test do
+	gem "tux"
   gem "rerun"
   gem "dotenv", groups: [:development, :test]
 end

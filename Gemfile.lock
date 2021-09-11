@@ -68,6 +68,7 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
+    geocoder (1.6.7)
     http (5.0.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -141,6 +142,8 @@ GEM
       tilt (~> 2.0)
     sinatra-cross_origin (0.4.0)
     tilt (2.0.10)
+    time_difference (0.5.0)
+      activesupport
     tux (0.3.0)
       ripl (>= 0.3.5)
       ripl-multi_line (>= 0.2.4)
@@ -162,6 +165,7 @@ DEPENDENCIES
   dry-validation
   factory_bot
   faker
+  geocoder
   http
   pg
   rack-test
@@ -173,6 +177,7 @@ DEPENDENCIES
   sinatra-activerecord
   sinatra-contrib
   sinatra-cross_origin
+  time_difference
   tux
 
 RUBY VERSION

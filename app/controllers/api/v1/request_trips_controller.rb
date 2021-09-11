@@ -11,10 +11,11 @@ module Api
 			end
 
 			def run
-				return { errors: @contract_validation.errors.to_h }.to_json                                 if validation
-				return { errors: { driver: "At this moment, drivers are not available" }}.to_json           if driver.nil?
-				return { errors: { email: "Email not found" }}.to_json                                      if rider.nil?
-				return { errors: { payment_method: "You must register the payment method first" }}.to_json  if rider_authorized.nil?
+				return { errors: @contract_validation.errors.to_h }.to_json                                          if validation
+				return { errors: { driver: "At this moment, drivers are not available" }}.to_json                    if driver.nil?
+				return { errors: { email: "Email not found" }}.to_json                                               if rider.nil?
+				return { errors: { payment_method: "You must register the payment method first" }}.to_json           if rider_authorized?
+				return { errors: { rider: "You must finish the current trip before requesting a new one" }}.to_json  if rider_ongoing?
 
 				create_trip
 			end
@@ -22,7 +23,7 @@ module Api
 			def create_trip
 				@trip = Trip.new(params)
 				if @trip.save
-					{ trip: @trip }.to_json
+					{ data: @trip }.to_json
 				else
 					{ errors: @trip.errors }.to_json
 				end
@@ -37,10 +38,14 @@ module Api
 			def rider
 				@rider = Rider.find_by(email: @data["email"])
 			end      
-			
-			def rider_authorized
-				@rider_authorized = Rider.rider_authorized(@data["email"]).first
+
+			def rider_authorized?
+				Rider.rider_authorized(@data["email"]).nil?
 			end
+
+			def rider_ongoing?
+				Rider.rider_ongoing(@data["email"]).present?
+			end			
 
 			def driver
 				@driver = Driver.find_available.last
