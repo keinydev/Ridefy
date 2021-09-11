@@ -5,6 +5,7 @@ require "sinatra/namespace"
 require 'dotenv/load'
 require "./config/cors"
 require "./lib/request_helper"
+require './app/controllers/api/v1/riders_controller'
 require './app/controllers/api/v1/payment_methods_controller'
 require './app/controllers/api/v1/request_trips_controller'
 require './app/controllers/api/v1/finish_trips_controller'
@@ -26,10 +27,15 @@ class App < Sinatra::Base
   end
 
   get "/" do
-    "Hello!"
+    { api: { v1: { documentation: "https://ridefy.docs.apiary.io/"}}}.to_json
   end
 
   namespace '/api/v1' do
+
+	  get "/payment_method/:email" do
+	  	@body_params = { "email" => params['email'] }
+      Api::V1::RidersController.new(@body_params).get_payment_methods
+	  end
 
 	  post "/payment_method" do
       Api::V1::PaymentMethodsController.new(@body_params).run
