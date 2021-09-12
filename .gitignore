@@ -51,3 +51,4 @@ build-iPhoneSimulator/
 
 # Ignore credentials and more.
 /config/database.yml
+.env
