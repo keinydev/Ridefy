@@ -1,80 +1,194 @@
 FORMAT: 1A
-HOST: https://polls.apiblueprint.org/
+HOST: https://ridefy.herokuapp.com/
 
-# ridefy
+# Ridefy API V1
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Ridefy is a small ride-hailing service, that will use the Wompi API for monetary transactions.
 
-## Questions Collection [/questions]
+## Home [/]
 
-### List All Questions [GET]
+### Get Api Documentation [GET]
 
 + Response 200 (application/json)
 
         [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
+                "api": {
+                    "v1": {
+                        "documentation": "https://ridefy.docs.apiary.io/"
                     }
-                ]
+                }
             }
         ]
 
-### Create a New Question [POST]
+## Payment Method [/api/v1/payment_methods]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+### Create a Payment Method [POST]
+
+Wompi generates a token when you register a payment type (this is a previous request 
+not included in this app). The acceptance_token is another diferent request from their api app
+and required for transactions and payment methods
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "token": "tok_test_13341_55E172708c3a5AbEE979aA8D0264b10B",
+            "email": "rider_0@example.com",
+            "method_type": "CARD",
+            "acceptance_token": "eyJhbXkN2sAr4txmQtmotkFwU..."
         }
 
 + Response 201 (application/json)
 
-    + Headers
+    + Body
 
-            Location: /questions/2
+            {
+                "data": {
+                    "id": 1,
+                    "method_type": "CARD",
+                    "source_id": "123456",
+                    "rider": {
+                        "id": 1,
+                        "email": "rider_0@example.com"
+                    }
+                }
+            }
+            
+## Request Trip [/api/v1/trips]
+
+### Create a Trip [POST]
+
++ Request (application/json)
+
+        {
+            "email": "rider_0@example.com",
+            "start_location":  { "latitude": 4.6973867, "longitude": -74.0493784 },
+            "end_location": { "latitude": 4.654368, "longitude": -74.0584483 }
+        }
+
++ Response 201 (application/json)
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
+                "data": {
+                    "id": 1,
+                    "start_location":  { "latitude": 4.6973867, "longitude": -74.0493784 },
+                    "end_location": { "latitude": 4.654368, "longitude": -74.0584483 },
+                    "start_time": "2021-09-11 00:38:56.902399000 +0000",
+                    "rider": {
+                        "id": 1,
+                        "email": "rider_0@example.com"
+                    },
+                    "driver": {
+                        "id": 1,
+                        "email": "driver_0@example.com"
+                    },
+                    "car": {
+                        "id": 1,
+                        "license_plate": "121-saa32-3232-12",
+                        "car_type": "Sedan"
                     }
-                ]
+                }
+            }    
+            
+## Finish Trip [/api/v1/trips/:id]
+
+### Update a Trip [PUT]
+
+This automatically creates a charge
+
++ Request (application/json)
+
+        {
+            "end_location": { "latitude": 4.854368, "longitude": -74.0584983 }
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "data": {
+                    "id": 1,
+                    "start_location":  { "latitude": 4.6973867, "longitude": -74.0493784 },
+                    "end_location": { "latitude": 4.654368, "longitude": -74.0584483 },
+                    "start_time": "2021-09-11 00:38:56.902399000 +0000",
+                    "end_time": "2021-09-11 00:39:56.902399000 +0000",
+                    "rider": {
+                        "id": 1,
+                        "email": "rider_0@example.com"
+                    },
+                    "driver": {
+                        "id": 1,
+                        "email": "driver_0@example.com"
+                    },
+                    "car": {
+                        "id": 1,
+                        "license_plate": "121-saa32-3232-12",
+                        "car_type": "Sedan"
+                    },
+                    "charge": {
+                        "id": 1,
+                        "total": 8461.93
+                    }   
+                }
+            }              
+            
+## Riders Payment Methods [/api/v1/riders/:email/payment_methods]
+
+### Get Payment Methods  [GET]
+
++ Response 200 (application/json)
+
+        {
+            "data": [
+                {
+                    "id": 1,
+                    "method_type": "CARD",
+                    "source_id": "123456"
+                }
+            ]
+        }
+        
+## Charges [/api/v1/charges/:id]
+
+### Update a Charge [PUT]
+
+The charge was previously created when you finish a trip, so it is necessary to enter the 
+acceptance token in order to generate a transaction. You must enter the payment method as well
+(considering the user has many payment methods)
+
++ Request (application/json)
+
+            {
+                "email": "rider_0@example.com",
+                "payment_method_id": 1,
+                "acceptance_token": "eyJhbGciOsasa...."
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "data": {
+                    "id": 1,
+                    "total": 8461.93,
+                    "transaction_id": "113341-1631404161-65227",
+                    "payment_method": {
+                        "id": 1,
+                        "method_type": "CARD"
+                    },                    
+                    "trip": {
+                        "start_location":  { "latitude": 4.6973867, "longitude": -74.0493784 },
+                        "end_location": { "latitude": 4.654368, "longitude": -74.0584483 },
+                        "start_time": "2021-09-11 00:38:56.902399000 +0000",
+                        "end_time": "2021-09-11 00:39:56.902399000 +0000",
+                        "driver": {
+                            "id": 1,
+                            "email": "driver_0@example.com"
+                        }
+                    }
+                }
             }
