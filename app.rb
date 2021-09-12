@@ -32,12 +32,12 @@ class App < Sinatra::Base
 
   namespace '/api/v1' do
 
-	  get "/payment_method/:email" do
+	  get "/riders/:email/payment_methods" do
 	  	@body_params = { "email" => params['email'] }
       Api::V1::RidersController.new(@body_params).get_payment_methods
 	  end
 
-	  post "/payment_method" do
+	  post "/payment_methods" do
       Api::V1::PaymentMethodsController.new(@body_params).run
 	  end
 

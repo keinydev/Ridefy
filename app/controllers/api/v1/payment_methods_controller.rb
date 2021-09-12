@@ -33,7 +33,17 @@ module Api
 		    @payment_method = PaymentMethod.new(params)
 
 		    if @payment_method.save
-		    	{ data: @payment_method }.to_json
+		    	{ 
+		    		data: {
+			    		id: @payment_method.id,
+			    		method_type: @payment_method.method_type,
+			    		source_id: @payment_method.source_id,
+			    		rider: {
+			    			id: @payment_method.rider.id,
+			    			email: @payment_method.rider.email
+			    		}
+		    		}
+		    	}.to_json
 		    else
 		    	{ errors: @payment_method.errors }.to_json
 		    end

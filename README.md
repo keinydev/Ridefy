@@ -1,5 +1,9 @@
 # Ridefy
-JSON RESTful API, for a small ride-hailing service build with Sinatra
+JSON RESTful API, for a small ride-hailing service build with Sinatra and PostgreSQL
+
+## Api Documentation
+
+(Apiary doc)[https://ridefy.docs.apiary.io/]
 
 ## Install the gems needed
 
@@ -10,25 +14,42 @@ bundle install
 
 ## Run Database
 
+Create a database
+
 ```
 rake db:create
 ```
 
-then
+Create migrations
 
 ```
 rake db:migrate
 ```
 
+Load fake data
+
+```
+rake db:seed
+```
+
 ## Run Test
 
-use in your console
+Run tests
+
 ```
 rspec spec
 ```
+
+Run test with detailed format
+
+```
+rspec spec -f d
+```
+
 ## Run App
 
 Execute the console 
+
 ```
 ruby app.rb
 ```

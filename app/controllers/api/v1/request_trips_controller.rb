@@ -36,7 +36,12 @@ module Api
 							driver: {
 								id: @trip.driver.id,
 								email: @trip.driver.email
-							}					
+							},
+							car: {
+								id: @trip.car.id,
+								license_plate: @trip.car.license_plate,
+								car_type: @trip.car.car_type
+							}													
 						}
 					}.to_json
 				else

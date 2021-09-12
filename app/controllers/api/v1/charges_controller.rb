@@ -35,7 +35,28 @@ module Api
 		    @data = @data.transform_keys(&:to_s)
 
 		    if charge.update(transaction_id: @data["transaction_id"], payment_method_id: @data["payment_method_id"])
-		    	{ data: charge }.to_json
+		    	{
+		    	 	data: {
+		    	 		id: charge.id,
+		    	 		total: charge.total,
+		    	 		transaction_id: charge.transaction_id,
+		    	 		payment_method: {
+		    	 			id: charge.payment_method.id,
+		    	 			method_type: charge.payment_method.method_type
+		    	 		},
+		    	 		trip: {
+		    	 			id: charge.trip.id,
+		    	 			start_location: charge.trip.start_location,
+		    	 			end_location: charge.trip.end_location,
+		    	 			start_time: charge.trip.start_time,
+		    	 			end_time: charge.trip.end_time,		
+		    	 			driver: {
+		    	 				id: charge.trip.driver.id,
+		    	 				email: charge.trip.driver.email
+		    	 			}	 			
+		    	 		}
+		    	 	} 
+		    	}.to_json
 		    else
 		    	{ errors: charge.errors }.to_json
 		    end
@@ -63,7 +84,7 @@ module Api
       		payment_method: {
       			installments: 2
       		},
-      		reference: "Trip-#{charge.trip_id}",
+      		reference: "Trip-#{charge.trip.id}",
       		payment_source_id: payment_method.source_id
       	}
       end

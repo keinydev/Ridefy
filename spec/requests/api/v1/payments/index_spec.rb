@@ -1,6 +1,6 @@
 require "sinatra_helper" 
 
-describe "GET api/v1/payment_method/:email", type: :request do
+describe "GET api/v1/riders/:email/payment_methods", type: :request do
 
   let(:app) { App.new }
 
@@ -8,7 +8,7 @@ describe "GET api/v1/payment_method/:email", type: :request do
 
   let!(:payment_method_list) { create_list(:payment_method, 3, rider: rider) } 
 
-  subject(:get_payment_method) { get "/api/v1/payment_method/#{rider.email}" }
+  subject(:get_payment_method) { get "/api/v1/riders/#{rider.email}/payment_methods" }
 
   context 'when params are valid' do
     before do
@@ -32,7 +32,7 @@ describe "GET api/v1/payment_method/:email", type: :request do
 
   context 'when the email does not exist' do
     before do
-      get "/api/v1/payment_method/not_valid@example.com"
+      get "api/v1/riders/not_valid@example.com/payment_methods"
     end
 
     it 'returns errors -> email key in body response' do
