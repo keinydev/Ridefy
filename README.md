@@ -3,7 +3,20 @@ JSON RESTful API, for a small ride-hailing service build with Sinatra and Postgr
 
 ## Api Documentation
 
-(Apiary doc)[https://ridefy.docs.apiary.io/]
+[Apiary doc](https://ridefy.docs.apiary.io/)
+
+## Previous configurations
+
+- Create a .env file and add this variables
+
+```
+SINATRA_ENV=development
+RACK_ENV=development
+WOMPI_URL=test_url
+WOMPI_PRIVATE_KEY=your_key
+```
+
+- Copy database.yml.example inside `config` folder and replace the data 
 
 ## Install the gems needed
 
