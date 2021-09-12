@@ -14,6 +14,6 @@ class ApplicationContract < Dry::Validation::Contract
   end
 
   register_macro(:payment_method_options) do
-  	key.failure('This app only accept CARD or NEQUI') if value != 'CARD' and value != 'NEQUI'
+    key.failure('This app only accept CARD or NEQUI') if value != 'CARD' and value != 'NEQUI'
   end  
 end

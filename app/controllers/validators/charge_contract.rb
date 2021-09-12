@@ -2,7 +2,7 @@ require_relative './application_contract.rb'
 
 class ChargeContract < ApplicationContract
 
-	params do
+  params do
     required(:email).filled(:string)
     required(:payment_method_id).value(:integer)
     required(:acceptance_token).filled(:string)
