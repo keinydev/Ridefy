@@ -5,6 +5,10 @@ JSON RESTful API, for a small ride-hailing service build with Sinatra and Postgr
 
 [Apiary doc](https://ridefy.docs.apiary.io/)
 
+## Diagram
+
+![Api design](/doc/diagram.png)
+
 ## Previous configurations
 
 - Create a .env file and add this variables
