@@ -33,8 +33,10 @@ gem "time_difference"
 # Geo 
 gem "geocoder"
 
+# Console
+gem "tux"
+
 group :development, :test do
-	gem "tux"
   gem "rerun"
   gem "dotenv", groups: [:development, :test]
 end

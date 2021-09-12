@@ -2,7 +2,6 @@ require "sinatra"
 require 'sinatra/cross_origin'
 require "sinatra/activerecord"
 require "sinatra/namespace"
-require 'dotenv/load'
 require "./config/cors"
 require "./lib/request_helper"
 require './app/controllers/api/v1/riders_controller'
