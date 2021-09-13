@@ -57,12 +57,6 @@ Run tests
 rspec spec
 ```
 
-Run test with detailed format
-
-```
-rspec spec -f d
-```
-
 ## Run App
 
 Execute the console 
