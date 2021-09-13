@@ -10,8 +10,8 @@ module Api
       end
 
       def run
-        return { errors: @contract_validation.errors.to_h }.to_json  if validation
-        return { errors: { email: "Email not found" }}.to_json       if rider.nil?
+        return [400, { errors: @contract_validation.errors.to_h }.to_json]  if validation
+        return [404, { errors: { email: "Email not found" }}.to_json]       if rider.nil?
         
         payment_method_request
       end
@@ -25,7 +25,7 @@ module Api
 
           create_payment_method
         else
-          { errors: res_body }.to_json
+          [422, { errors: res_body }.to_json]
         end   
       end
 
@@ -45,7 +45,7 @@ module Api
             }
           }.to_json
         else
-          { errors: @payment_method.errors }.to_json
+          [422, { errors: @payment_method.errors }.to_json]
         end
       end      
 

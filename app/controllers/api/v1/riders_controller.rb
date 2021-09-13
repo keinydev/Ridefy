@@ -7,7 +7,7 @@ module Api
       end
 
       def get_payment_methods
-        return { errors: { email: "Email not found" }}.to_json if rider.nil?
+        return [404, { errors: { email: "Email not found" }}.to_json] if rider.nil?
         
         data = rider.payment_methods
         

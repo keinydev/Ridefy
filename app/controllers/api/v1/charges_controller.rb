@@ -10,10 +10,10 @@ module Api
       end
 
       def run
-        return { errors: @contract_validation.errors.to_h }.to_json                           if validation
-        return { errors: { trip: "Process not found" }}.to_json                               if charge.nil?
-        return { errors: { email: "Payment Method not found" }}.to_json                       if payment_method.nil?
-        return { errors: { email: "This payment is not associated to the rider" }}.to_json    if no_associated_payment_method
+        return [400, { errors: @contract_validation.errors.to_h }.to_json]                         if validation
+        return [404, { errors: { trip: "Process not found" }}.to_json]                             if charge.nil?
+        return [402, { errors: { email: "Payment Method not found" }}.to_json]                     if payment_method.nil?
+        return [402, { errors: { email: "This payment is not associated to the rider" }}.to_json]  if no_associated_payment_method
         
         transaction_request
       end
@@ -27,7 +27,7 @@ module Api
 
           update_charge
         else
-          { errors: res_body }.to_json
+          [422, { errors: res_body }.to_json]
         end   
       end
 
@@ -58,7 +58,7 @@ module Api
             } 
           }.to_json
         else
-          { errors: charge.errors }.to_json
+          [422, { errors: charge.errors }.to_json]
         end
       end      
 

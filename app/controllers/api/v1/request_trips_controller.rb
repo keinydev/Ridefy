@@ -11,11 +11,11 @@ module Api
       end
 
       def run
-        return { errors: @contract_validation.errors.to_h }.to_json                                          if validation
-        return { errors: { driver: "At this moment, drivers are not available" }}.to_json                    if driver.nil?
-        return { errors: { email: "Email not found" }}.to_json                                               if rider.nil?
-        return { errors: { payment_method: "You must register the payment method first" }}.to_json           if rider_authorized
-        return { errors: { rider: "You must finish the current trip before requesting a new one" }}.to_json  if rider_ongoing
+        return [400, { errors: @contract_validation.errors.to_h }.to_json]                                          if validation
+        return [403, { errors: { driver: "At this moment, drivers are not available" }}.to_json]                    if driver.nil?
+        return [404, { errors: { email: "Email not found" }}.to_json]                                               if rider.nil?
+        return [402, { errors: { payment_method: "You must register the payment method first" }}.to_json]           if rider_authorized
+        return [403, { errors: { rider: "You must finish the current trip before requesting a new one" }}.to_json]  if rider_ongoing
 
         create_trip
       end
@@ -45,7 +45,7 @@ module Api
             }
           }.to_json
         else
-          { errors: @trip.errors }.to_json
+          [422, { errors: @trip.errors }.to_json]
         end
       end
 

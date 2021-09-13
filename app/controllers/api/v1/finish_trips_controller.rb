@@ -15,9 +15,9 @@ module Api
       end
 
       def run
-        return { errors: @contract_validation.errors.to_h }.to_json                    if validation
-        return { errors: { trip: "Trip not found" }}.to_json                           if trip.nil?
-        return { errors: { trip: "This trip has ended, no changes applies" }}.to_json  if trip.end_time.present?
+        return [400, { errors: @contract_validation.errors.to_h }.to_json]                    if validation
+        return [404, { errors: { trip: "Trip not found" }}.to_json]                           if trip.nil?
+        return [403, { errors: { trip: "This trip has ended, no changes applies" }}.to_json]  if trip.end_time.present?
         
         calculate_price
       end
@@ -57,7 +57,7 @@ module Api
             } 
           }.to_json
         else
-          { errors: trip.errors }.to_json
+          [422, { errors: trip.errors }.to_json]
         end
       end     
 
