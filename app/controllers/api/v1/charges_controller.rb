@@ -12,6 +12,7 @@ module Api
       def run
         return [400, { errors: @contract_validation.errors.to_h }.to_json]                                  if validation
         return [404, { errors: { charge: "Process not found" }}.to_json]                                    if charge.nil?
+        return [404, { errors: { charge: "Charge already paid. No changes applied." }}.to_json]             if charge.transaction_id.present?
         return [402, { errors: { payment_method: "Payment Method not found" }}.to_json]                     if payment_method.nil?
         return [402, { errors: { payment_method: "This payment is not associated to the rider" }}.to_json]  if no_associated_payment_method
         

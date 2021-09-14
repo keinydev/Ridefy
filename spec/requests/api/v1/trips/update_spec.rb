@@ -53,7 +53,7 @@ describe "PUT api/v1/trips/:id", type: :request do
 
     it 'returns errors -> trip key in body response' do
       expect(json_response['errors']['trip']).to be_present
-      expect(json_response['errors']['trip']).to eq("This trip has ended, no changes applies")
+      expect(json_response['errors']['trip']).to eq("This trip has ended, no changes applied")
     end  
   end  
 

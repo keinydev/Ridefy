@@ -26,6 +26,10 @@ class App < Sinatra::Base
     end
   end
 
+  error Sinatra::NotFound do
+    { error: "Request Not Found", api: { v1: { documentation: "https://ridefy.docs.apiary.io/"}}}.to_json
+  end
+
   get "/" do
     { api: { v1: { documentation: "https://ridefy.docs.apiary.io/"}}}.to_json
   end
