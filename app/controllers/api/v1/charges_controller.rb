@@ -84,7 +84,7 @@ module Api
           payment_method: {
             installments: 2
           },
-          reference: "Trip-#{charge.trip.id}",
+          reference: "Trip-#{charge.trip.id}-#{Time.now.to_i}",
           payment_source_id: payment_method.source_id
         }
       end

@@ -27,7 +27,7 @@ describe "PUT api/v1/charges/:id", type: :request do
     before do
       stub_request(:post, "https://sandbox.wompi.co/v1/transactions").
          with(
-           body: "{\"amount_in_cents\":4990000,\"currency\":\"COP\",\"customer_email\":\"#{rider.email}\",\"payment_method\":{\"installments\":2},\"reference\":\"Trip-#{trip.id}\",\"payment_source_id\":\"#{payment_method.source_id}\"}",
+           body: "{\"amount_in_cents\":4990000,\"currency\":\"COP\",\"customer_email\":\"#{rider.email}\",\"payment_method\":{\"installments\":2},\"reference\":\"Trip-#{trip.id}-#{Time.now.to_i}\",\"payment_source_id\":\"#{payment_method.source_id}\"}",
            headers: {
           'Accept'=>'application/json',
           'Authorization'=>"Bearer #{ENV['WOMPI_PRIVATE_KEY']}",
@@ -36,7 +36,7 @@ describe "PUT api/v1/charges/:id", type: :request do
           'Host'=>'sandbox.wompi.co',
           'User-Agent'=>'http.rb/5.0.1'
            }).
-         to_return(status: 200, body: "{\"data\":{\"id\": \"113341-1631302022-26141\",\"created_at\": \"2021-09-10T19:27:03.458Z\",\"amount_in_cents\": 4990000,\"reference\": \"Trip-#{trip.id}\",\"customer_email\": \"#{rider.email}\",\"currency\": \"COP\",\"payment_method_type\": \"CARD\",\"payment_method\": {\"type\": \"CARD\",\"extra\": {\"bin\": \"424242\",\"name\": \"VISA-4242\",\"brand\": \"VISA\",\"exp_year\": \"29\",\"exp_month\": \"06\",\"last_four\": \"4242\",\"card_holder\": \"#{rider.first_name}\"},\"installments\": 2},\"status\": \"PENDING\",\"status_message\": null,\"billing_data\": null,\"shipping_address\": null,\"redirect_url\": null,\"payment_source_id\": 16377,\"payment_link_id\": null,\"customer_data\": null,\"bill_id\": null,\"taxes\": []},\"meta\": {}}", headers: {})
+         to_return(status: 200, body: "{\"data\":{\"id\": \"113341-1631302022-26141\",\"created_at\": \"2021-09-10T19:27:03.458Z\",\"amount_in_cents\": 4990000,\"reference\": \"Trip-#{trip.id}-#{Time.now.to_i}\",\"customer_email\": \"#{rider.email}\",\"currency\": \"COP\",\"payment_method_type\": \"CARD\",\"payment_method\": {\"type\": \"CARD\",\"extra\": {\"bin\": \"424242\",\"name\": \"VISA-4242\",\"brand\": \"VISA\",\"exp_year\": \"29\",\"exp_month\": \"06\",\"last_four\": \"4242\",\"card_holder\": \"#{rider.first_name}\"},\"installments\": 2},\"status\": \"PENDING\",\"status_message\": null,\"billing_data\": null,\"shipping_address\": null,\"redirect_url\": null,\"payment_source_id\": 16377,\"payment_link_id\": null,\"customer_data\": null,\"bill_id\": null,\"taxes\": []},\"meta\": {}}", headers: {})
 
       put_charge
     end
