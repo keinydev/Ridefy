@@ -16,6 +16,8 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     bond (0.5.1)
     concurrent-ruby (1.1.9)
+    crack (0.4.5)
+      rexml
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
@@ -69,6 +71,7 @@ GEM
       ffi (>= 1.0.0)
       rake
     geocoder (1.6.7)
+    hashdiff (1.0.1)
     http (5.0.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -102,6 +105,7 @@ GEM
       ffi (~> 1.0)
     rerun (0.13.1)
       listen (~> 3.0)
+    rexml (3.2.5)
     ripl (0.7.1)
       bond (~> 0.5.1)
     ripl-multi_line (0.3.1)
@@ -154,6 +158,10 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7-x64-mingw32)
+    webmock (3.14.0)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     zeitwerk (2.4.2)
 
 PLATFORMS
@@ -179,6 +187,7 @@ DEPENDENCIES
   sinatra-cross_origin
   time_difference
   tux
+  webmock
 
 RUBY VERSION
    ruby 2.7.3p183

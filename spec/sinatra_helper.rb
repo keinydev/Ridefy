@@ -1,11 +1,11 @@
 require 'rspec'
 require 'rack/test'
+require 'webmock/rspec'
 require 'spec_helper'
 require 'factory_bot'
 require 'shoulda-matchers'
 require 'database_cleaner'
 require './spec/support/request_helper'
-# require '../app/controllers/api/v1/request_trips_controller'
 
 ENV['RACK_ENV'] ||= 'test'
 
@@ -20,11 +20,9 @@ module RSpecMixin
   end
 end
 
-RSpec.configure do |config|
+WebMock.disable_net_connect!(allow_localhost: true)
 
-  # config.before(:each) do
-  #   $db = []
-  # end
+RSpec.configure do |config|
 
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

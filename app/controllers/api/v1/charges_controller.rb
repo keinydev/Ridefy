@@ -10,10 +10,10 @@ module Api
       end
 
       def run
-        return [400, { errors: @contract_validation.errors.to_h }.to_json]                         if validation
-        return [404, { errors: { trip: "Process not found" }}.to_json]                             if charge.nil?
-        return [402, { errors: { email: "Payment Method not found" }}.to_json]                     if payment_method.nil?
-        return [402, { errors: { email: "This payment is not associated to the rider" }}.to_json]  if no_associated_payment_method
+        return [400, { errors: @contract_validation.errors.to_h }.to_json]                                  if validation
+        return [404, { errors: { charge: "Process not found" }}.to_json]                                    if charge.nil?
+        return [402, { errors: { payment_method: "Payment Method not found" }}.to_json]                     if payment_method.nil?
+        return [402, { errors: { payment_method: "This payment is not associated to the rider" }}.to_json]  if no_associated_payment_method
         
         transaction_request
       end
